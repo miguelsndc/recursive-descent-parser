@@ -9,6 +9,14 @@ Lexer::Lexer(std::string &text): _text(text) {
     }
 }
 
+void Lexer::set_expression(std::string exp) {
+    _text = exp;
+    _cursor = 0;
+    if (_text.size() > 0) {
+        _current_char = _text[_cursor];
+    }
+}
+
 void Lexer::skip_whitespace() {
     while (_current_char && std::isspace(_current_char)) {
         advance();

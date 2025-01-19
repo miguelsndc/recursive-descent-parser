@@ -6,7 +6,7 @@
 
 class Lexer {
   private:
-    std::string _text;
+    std::string _text = "";
     char _current_char = '\0';
     u32 _cursor = 0;
 
@@ -26,6 +26,8 @@ class Lexer {
 
   public:  
     Lexer(std::string& text);
+    Lexer() = default;
+    void set_expression(std::string exp);
     Token next_token();
 };
 

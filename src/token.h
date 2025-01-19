@@ -30,8 +30,6 @@ private:
                 return "ADD";
             case MULTIPLY:
                 return "MULTIPLY";
-            case UNARY:
-                return "UNARY";
             case PRIMARY:
                 return "PRIMARY";
             case LITERAL:
@@ -63,8 +61,10 @@ public:
 
     Type type = INTEGER;
     std::string val = "";
+
     Token() = default;
     Token(Type t, std::string value);
+
     void print();
 };
 
