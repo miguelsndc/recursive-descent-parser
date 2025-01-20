@@ -87,7 +87,7 @@ Token Lexer::handle_pipe() {
 
     if (_current_char == '|') {
         advance();
-        return Token(Token::Type::REL, "||");
+        return Token(Token::Type::OR, "||");
     }
 
     throw std::runtime_error("Expected `||` got `|` instead");

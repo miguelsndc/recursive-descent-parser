@@ -4,7 +4,10 @@
 
 BinaryExpression::BinaryExpression(Expression *_e1, Operand _op, Expression *_e2) 
 : e1(_e1), e2(_e2), op(_op)
-{}
+{
+    std::cout << e1->eval() << ' ' << op.val << ' ' << e2->eval() << " - ";
+    std::cout << "Creating binary expression with operator: " << op.val << std::endl;
+}
 
 int BinaryExpression::eval() {
     int v1 = e1->eval();
@@ -17,9 +20,7 @@ int BinaryExpression::eval() {
     if (op.val == "+") return v1 + v2;
     if (op.val == "-") return v1 - v2;
     if (op.val == "/") {
-        if (v2 == 0) {
-            throw std::runtime_error("Division by zero");
-        }
+        if (v2 == 0) throw std::runtime_error("Division by zero");
         return v1 / v2;
     }
     if (op.val == "*") return v1 * v2;
@@ -60,9 +61,7 @@ LiteralExpression::LiteralExpression(Token _value)
 
 int LiteralExpression::eval() {
     if (is_boolean) {
-        if (value.val == "true") return 1;
-        if (value.val == "false") return 0;
-        throw std::runtime_error("Boolean value different from `true` and `false`");
+        return (value.val == "true");
     }
     return std::stoi(value.val);
 }

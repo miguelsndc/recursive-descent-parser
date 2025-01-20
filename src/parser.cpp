@@ -53,7 +53,7 @@ Expression * Parser::parse_rel_exp() {
     while (curr_token.type == Token::REL) {
         Operand op = curr_token;
         read_token();
-        Expression *right = parse_rel_exp();
+        Expression *right = parse_add_exp();
         left =  new BinaryExpression(left, op, right);
     }
     return left;
@@ -104,7 +104,6 @@ Expression * Parser::parse_unary_exp() {
     if ((curr_token.type == Token::ADD && curr_token.val == "-") || curr_token.type == Token::UNARY) {
         Operand op = curr_token;
         read_token();
-        // me perdoe mas só funciona assim
         Expression *e = (curr_token.type == Token::ADD ? (parse_unary_exp()) : parse_primary_exp());
         return new UnaryExpression(e, op);
     } 
