@@ -14,5 +14,8 @@ bool Token::is_arithmetic() {
 bool Token::is_relational() {
     return type == REL;
 }
+bool Token::is_equality() {
+    return type == EQUALS;
+}
 
 Token::Token(Type t, std::string value): type(t), val(value) {};

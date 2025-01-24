@@ -118,13 +118,13 @@ Expression * Parser::parse_primary_exp() {
         Expression *e = parse_exp();
         
         if (m_curr_token.type != Token::RIGHT_PAREN) {
-            throw std::runtime_error("Expected closing parenthesis");
+            throw std::runtime_error("Error: Expected closing parenthesis");
         }
         read_token();
         return e;
     } 
     
-    throw std::runtime_error("Expected literal or (expression)");
+    throw std::runtime_error("Error: Expected literal or (expression)");
 }
 
 Expression * Parser::parse_unary_exp() {

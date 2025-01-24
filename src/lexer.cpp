@@ -59,7 +59,7 @@ Token Lexer::handle_ampersand() {
         return Token(Token::AND, "&&");
     }
 
-    throw std::runtime_error("Expected `&&`, got `&` instead.");
+    throw std::runtime_error("Error: Expected `&&`, got `&` instead.");
 }
 Token Lexer::handle_greater_than() {
     advance();
@@ -79,7 +79,7 @@ Token Lexer::handle_equals() {
         return Token(Token::EQUALS, "==");
     }
 
-    throw std::runtime_error("Expected `==` got `=` instead");
+    throw std::runtime_error("Error: Expected `==` got `=` instead");
 }
 Token Lexer::handle_pipe() {
     advance();
@@ -89,14 +89,14 @@ Token Lexer::handle_pipe() {
         return Token(Token::OR, "||");
     }
 
-    throw std::runtime_error("Expected `||` got `|` instead");
+    throw std::runtime_error("Error: Expected `||` got `|` instead");
 }
 Token Lexer::handle_exclamation() {
     advance();
     if (m_current_char == '=') {
         return Token(Token::EQUALS, "!=");
     }
-    throw std::runtime_error("Expected `!=` got `!` instead");
+    throw std::runtime_error("Error: Expected `!=` got `!` instead");
 }    
 
 Token Lexer::handle_true_literal() {
@@ -111,7 +111,7 @@ Token Lexer::handle_true_literal() {
         return Token(Token::LITERAL, result);
     }
 
-    throw std::runtime_error("Expected `true`, found: " + result + " instead");
+    throw std::runtime_error("Error: Expected `true`, found: " + result + " instead");
 }
 
 Token Lexer::handle_false_literal() {
@@ -127,7 +127,7 @@ Token Lexer::handle_false_literal() {
         return Token(Token::LITERAL, result);
     }
 
-    throw std::runtime_error("Expected `false`, found: " + result + " instead");
+    throw std::runtime_error("Error: Expected `false`, found: " + result + " instead");
 }
 
 Token Lexer::next_token() {

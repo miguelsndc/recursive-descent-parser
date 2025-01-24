@@ -13,7 +13,7 @@ std::string Expression::to_string(int value) {
 BinaryExpression::BinaryExpression(Expression *_e1, Token _operand, Expression *_e2) 
 : e1(_e1), e2(_e2), operand(_operand)
 {
-    this->is_boolean = operand.type == Token::OR || operand.type == Token::REL || operand.type == Token::EQUALS || operand.type == Token::AND;
+    is_boolean = operand.is_logical() || operand.is_relational() || operand.is_equality();
 }
 
 BinaryExpression::~BinaryExpression() {
@@ -26,22 +26,23 @@ int BinaryExpression::eval() {
     int v2 = e2->eval();
 
     bool equal_types = e1->is_boolean == e2->is_boolean;
+
     if (!equal_types) {
-        throw std::runtime_error("Operations must be between literals of same type.");
+        throw std::runtime_error("Error: Operations must be between literals of same type.");
     } 
     
     if (equal_types && e1->is_boolean && (operand.is_arithmetic() || operand.is_relational())) {
-        throw std::runtime_error("Operation: " + operand.val + " not allowed between boolean expressions");
+        throw std::runtime_error("Error: Operation: " + operand.val + " not allowed between boolean expressions");
     }
 
     if (equal_types && !e1->is_boolean && operand.is_logical()) {
-        throw std::runtime_error("Operation: " + operand.val + " not allowed between integer expressions");
+        throw std::runtime_error("Error: Operation: " + operand.val + " not allowed between integer expressions");
     }
 
     if (operand.val == "+") return v1 + v2;
     if (operand.val == "-") return v1 - v2;
     if (operand.val == "/") {
-        if (v2 == 0) throw std::runtime_error("Division by zero");
+        if (v2 == 0) throw std::runtime_error("Error: Division by zero");
         return v1 / v2;
     }
     if (operand.val == "*") return v1 * v2;
@@ -54,7 +55,7 @@ int BinaryExpression::eval() {
     if (operand.val == "||") return v1 || v2;
     if (operand.val == "&&") return v1 && v2;
 
-    throw std::runtime_error("Unknown operator: " + operand.val);
+    throw std::runtime_error("Error: Unknown operator: " + operand.val);
 }
 
 UnaryExpression::UnaryExpression(Expression *_e1, Token _operand) 
@@ -69,7 +70,7 @@ int UnaryExpression::eval() {
 
     if (!e1->is_boolean && operand.val == "-") return -v1; 
 
-    throw std::runtime_error("Unknown or Unmatched operanderator: " + operand.val);
+    throw std::runtime_error("Error: Unknown or Unmatched operanderator: " + operand.val);
 }
 
 LiteralExpression::LiteralExpression(Token _value) 

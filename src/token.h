@@ -64,6 +64,7 @@ public:
     bool is_logical();
     bool is_arithmetic();
     bool is_relational();
+    bool is_equality();
 
     // also debugging
     void print();
