@@ -1,17 +1,23 @@
 CXX = g++
 CXXFLAGS = -Wall -g -std=c++17
-
-SRCS = $(wildcard src/*.cpp)
-OBJS = $(SRCS:.cpp=.o)
+SRCDIR = src
+BUILDDIR = build
+SRCS = $(wildcard $(SRCDIR)/*.cpp)
+OBJS = $(SRCS:$(SRCDIR)/%.cpp=$(BUILDDIR)/%.o)
 TARGET = main
 
-$(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET)
+# Create build directory if it doesn't exist
+$(shell mkdir -p $(BUILDDIR))
 
-src/%.o: src/%.cpp src/%.h
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $@
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(BUILDDIR) $(TARGET)
 
-.PHONY: clean
+.PHONY: clean all

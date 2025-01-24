@@ -1,63 +1,62 @@
 #include "lexer.h"
 #include "token.h"
-#include "typedefs.h"
 #include <stdexcept>
 
-Lexer::Lexer(std::string &text): _text(text) {
-    if (_text.size() > 0) {
-        _current_char = _text[_cursor];
+Lexer::Lexer(std::string &text): m_text(text) {
+    if (m_text.size() > 0) {
+        m_current_char = m_text[m_cursor];
     }
 }
 
 void Lexer::set_expression(std::string exp) {
-    _text = exp;
-    _cursor = 0;
-    if (_text.size() > 0) {
-        _current_char = _text[_cursor];
+    m_text = exp;
+    m_cursor = 0;
+    if (m_text.size() > 0) {
+        m_current_char = m_text[m_cursor];
     }
 }
 
 void Lexer::skip_whitespace() {
-    while (_current_char && std::isspace(_current_char)) {
+    while (m_current_char && std::isspace(m_current_char)) {
         advance();
     }
 };
 
 void Lexer::advance() { 
-    _cursor++;
+    m_cursor++;
 
-    if (_cursor >= _text.size()) {
-        _current_char = '\0';
+    if (m_cursor >= m_text.size()) {
+        m_current_char = '\0';
     } else {
-        _current_char = _text[_cursor];
+        m_current_char = m_text[m_cursor];
     }
 };
 
 Token Lexer::get_integer_literal() {
     std::string result = "";
-    while (_current_char && std::isdigit(_current_char)) {
-        result += _current_char;
+    while (m_current_char && std::isdigit(m_current_char)) {
+        result += m_current_char;
         advance();
     }
-    return Token(Token::Type::LITERAL, result);
+    return Token(Token::LITERAL, result);
 };
 
 Token Lexer::handle_less_than() {
     advance();
 
-    if (_current_char == '=') {
+    if (m_current_char == '=') {
         advance();
-        return Token(Token::Type::REL, "<=");
+        return Token(Token::REL, "<=");
     }
 
-    return Token(Token::Type::REL, "<");
+    return Token(Token::REL, "<");
 }
 Token Lexer::handle_ampersand() {
     advance();
 
-    if (_current_char == '&') {
+    if (m_current_char == '&') {
         advance();
-        return Token(Token::Type::AND, "&&");
+        return Token(Token::AND, "&&");
     }
 
     throw std::runtime_error("Expected `&&`, got `&` instead.");
@@ -65,19 +64,19 @@ Token Lexer::handle_ampersand() {
 Token Lexer::handle_greater_than() {
     advance();
 
-    if (_current_char == '=') {
+    if (m_current_char == '=') {
         advance();
-        return Token(Token::Type::REL, ">=");
+        return Token(Token::REL, ">=");
     }
 
-    return Token(Token::Type::REL, ">");
+    return Token(Token::REL, ">");
 }
 Token Lexer::handle_equals() {
     advance();
 
-    if (_current_char == '=') {
+    if (m_current_char == '=') {
         advance();
-        return Token(Token::Type::EQUALS, "==");
+        return Token(Token::EQUALS, "==");
     }
 
     throw std::runtime_error("Expected `==` got `=` instead");
@@ -85,78 +84,78 @@ Token Lexer::handle_equals() {
 Token Lexer::handle_pipe() {
     advance();
 
-    if (_current_char == '|') {
+    if (m_current_char == '|') {
         advance();
-        return Token(Token::Type::OR, "||");
+        return Token(Token::OR, "||");
     }
 
     throw std::runtime_error("Expected `||` got `|` instead");
 }
 Token Lexer::handle_exclamation() {
     advance();
-    if (_current_char == '=') {
-        return Token(Token::Type::EQUALS, "!=");
+    if (m_current_char == '=') {
+        return Token(Token::EQUALS, "!=");
     }
-    return Token(Token::Type::UNARY, "!");
+    throw std::runtime_error("Expected `!=` got `!` instead");
 }    
 
 Token Lexer::handle_true_literal() {
     std::string target = "true";
     std::string result = "";
-    for (u32 i = 0; _current_char && i < target.size(); i++) {
-        result += _current_char;
+    for (unsigned int i = 0; m_current_char && i < target.size(); i++) {
+        result += m_current_char;
         advance();
     }
     
     if (result == target) {
-        return Token(Token::Type::LITERAL, result);
+        return Token(Token::LITERAL, result);
     }
 
-    throw std::runtime_error("Expected `true`, found: " + result + "instead");
+    throw std::runtime_error("Expected `true`, found: " + result + " instead");
 }
 
 Token Lexer::handle_false_literal() {
     std::string target = "false";
     std::string result = "";
 
-    for (u32 i = 0; _current_char && i < target.size(); i++) {
-        result += _current_char;
+    for (unsigned int i = 0; m_current_char && i < target.size(); i++) {
+        result += m_current_char;
         advance();
     }
     
     if (result == target) {
-        return Token(Token::Type::LITERAL, result);
+        return Token(Token::LITERAL, result);
     }
 
-    throw std::runtime_error("Expected `false`, found: " + result + "instead");
+    throw std::runtime_error("Expected `false`, found: " + result + " instead");
 }
 
 Token Lexer::next_token() {
     std::string result = "";
 
-    while (_current_char) {
-        if (std::isspace(_current_char)) {
+    while (m_current_char) {
+        if (std::isspace(m_current_char)) {
             skip_whitespace();
             continue;
         }
 
-        if (std::isdigit(_current_char)) {
+        if (std::isdigit(m_current_char)) {
             return get_integer_literal();
         }
 
-        switch (_current_char) {
+        switch (m_current_char) {
                 case '+':
                     advance();
-                    return Token(Token::Type::ADD, "+");
+                    return Token(Token::ADD, "+");
                 case '-':
                     advance();
-                    return Token(Token::Type::ADD, "-");
+                    return Token(Token::ADD, "-");
                 case '*':
                     advance();
-                    return Token(Token::Type::MULTIPLY, "*");
+                    return Token(Token::MULTIPLY, "*");
                 case '/':
                     advance();
-                    return Token(Token::Type::MULTIPLY, "/");
+                    return Token(Token::MULTIPLY, "/");
                 case '=':
                     return handle_equals();
                 case '<':
@@ -175,16 +174,16 @@ Token Lexer::next_token() {
                     return handle_false_literal();
                 case '(':
                     advance();
-                    return Token(Token::Type::LEFT_PAREN, "(");
+                    return Token(Token::LEFT_PAREN, "(");
                 case ')':
                     advance();
-                    return Token(Token::Type::RIGHT_PAREN, ")");
+                    return Token(Token::RIGHT_PAREN, ")");
                 default:
-                    throw std::runtime_error(std::string("Invalid character: ") + _current_char);
+                    throw std::runtime_error(std::string("Invalid character: ") + m_current_char);
             }
     }
 
-    return Token(Token::Type::_EOF, "");
+    return Token(Token::_EOF, "");
 }
 
 

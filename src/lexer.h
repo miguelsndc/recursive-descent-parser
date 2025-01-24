@@ -2,15 +2,16 @@
 #define LEXER_H
 
 #include "token.h"
-#include "typedefs.h"
 
 class Lexer {
   private:
-    std::string _text = "";
-    char _current_char = '\0';
-    u32 _cursor = 0;
+    std::string m_text = "";
+    char m_current_char = '\0';
+    unsigned int m_cursor = 0;
 
     void skip_whitespace();
+
+    // take next token
     void advance();
     
     // utility functions
@@ -26,8 +27,10 @@ class Lexer {
 
   public:  
     Lexer(std::string& text);
+
     Lexer() = default;
     void set_expression(std::string exp);
+
     Token next_token();
 };
 

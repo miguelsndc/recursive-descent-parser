@@ -10,10 +10,8 @@ private:
     std::string _get_type_as_string() {
         switch (type)
         {
-            case INTEGER:
-                return "INTEGER";
-            case BOOLEAN:
-                return "BOOLEAN";
+            case LITERAL:
+                return "LITERAL";
             case LEFT_PAREN:
                 return "LEFT_PAREN";
             case RIGHT_PAREN:
@@ -32,8 +30,6 @@ private:
                 return "MULTIPLY";
             case PRIMARY:
                 return "PRIMARY";
-            case LITERAL:
-                return "LITERAL";
             case _EOF:
                 return "EOF";
         default:
@@ -43,28 +39,28 @@ private:
     }
 public:
     enum Type {
-        INTEGER,
-        BOOLEAN,
-        LEFT_PAREN,
-        RIGHT_PAREN,
-        OR,
-        AND,
-        EQUALS,
-        REL,
-        ADD,
-        MULTIPLY,
-        UNARY,
-        PRIMARY,
-        LITERAL,
-        _EOF,
+        BEGIN, // alias
+        LEFT_PAREN, // (
+        RIGHT_PAREN, // )
+        OR, // ||
+        AND, // && 
+        EQUALS, // == !=
+        REL, // <, >, >=, <=
+        ADD, // +, -
+        MULTIPLY, // *, /
+        UNARY, // -
+        PRIMARY, // <literal> ( exp )
+        LITERAL, // integers and booleans
+        _EOF, // end of file 
     };
 
-    Type type = INTEGER;
+    Type type = BEGIN;
     std::string val = "";
 
     Token() = default;
     Token(Type t, std::string value);
 
+    // also debugging
     void print();
 };
 
