@@ -25,10 +25,18 @@ int BinaryExpression::eval() {
     int v1 = e1->eval();
     int v2 = e2->eval();
 
-    if (e1->is_boolean ^ e2->is_boolean) {
+    bool equal_types = e1->is_boolean == e2->is_boolean;
+    if (!equal_types) {
         throw std::runtime_error("Operations must be between literals of same type.");
-   }
+    } 
+    
+    if (equal_types && e1->is_boolean && (operand.is_arithmetic() || operand.is_relational())) {
+        throw std::runtime_error("Operation: " + operand.val + " not allowed between boolean expressions");
+    }
 
+    if (equal_types && !e1->is_boolean && operand.is_logical()) {
+        throw std::runtime_error("Operation: " + operand.val + " not allowed between integer expressions");
+    }
 
     if (operand.val == "+") return v1 + v2;
     if (operand.val == "-") return v1 - v2;

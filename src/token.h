@@ -60,6 +60,11 @@ public:
     Token() = default;
     Token(Type t, std::string value);
 
+    // utility methods
+    bool is_logical();
+    bool is_arithmetic();
+    bool is_relational();
+
     // also debugging
     void print();
 };
