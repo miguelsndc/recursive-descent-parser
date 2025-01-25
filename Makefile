@@ -6,7 +6,6 @@ SRCS = $(wildcard $(SRCDIR)/*.cpp)
 OBJS = $(SRCS:$(SRCDIR)/%.cpp=$(BUILDDIR)/%.o)
 TARGET = main
 
-# Create build directory if it doesn't exist
 $(shell mkdir -p $(BUILDDIR))
 
 all: $(TARGET)
