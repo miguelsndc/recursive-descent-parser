@@ -26,7 +26,7 @@ class Parser {
     Parser();
     ~Parser();
     Expression *parse_exp();
-    std::string parse(std::string exp);
+    std::string parse();
 };
 
 #endif

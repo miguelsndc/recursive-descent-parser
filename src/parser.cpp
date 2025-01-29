@@ -1,4 +1,5 @@
 #include "parser.h"
+#include <iostream>
 #include <stdexcept>
 
 std::pair<std::string, Expression*> Parser::handle_parse(std::string _exp) {
@@ -17,13 +18,18 @@ std::pair<std::string, Expression*> Parser::handle_parse(std::string _exp) {
     }
 }
 
-std::string Parser::parse(std::string exp) {
-    // ensure memory is free'd per test case
-    auto [answer, expression_ptr_dealloc] = handle_parse(exp);
-    if (expression_ptr_dealloc != nullptr) {
-        delete expression_ptr_dealloc;
+std::string Parser::parse() {
+    int c; std::cin >> c;
+    while(c--) {
+        std::string exp;
+        std::getline(std::cin, exp);
+        // ensure memory is free'd per test case
+        auto [answer, expression_ptr_dealloc] = handle_parse(exp);
+        if (expression_ptr_dealloc != nullptr) {
+            delete expression_ptr_dealloc;
+        }
+        std::cout << answer << '\n';
     }
-    return answer;
 }
 
 Parser::Parser() {
