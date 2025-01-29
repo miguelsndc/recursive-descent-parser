@@ -18,10 +18,11 @@ std::pair<std::string, Expression*> Parser::handle_parse(std::string _exp) {
     }
 }
 
-std::string Parser::parse() {
+void Parser::parse() {
     int c; std::cin >> c;
+    std::string exp;
+    std::getline(std::cin,exp); // skip test case line
     while(c--) {
-        std::string exp;
         std::getline(std::cin, exp);
         // ensure memory is free'd per test case
         auto [answer, expression_ptr_dealloc] = handle_parse(exp);
